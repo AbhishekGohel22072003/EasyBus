@@ -1,0 +1,220 @@
+{% extends "base.html" %} {% load humanize %} {% load customfilter %} {% block pageContent %}
+
+<style>
+    html * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+    body {
+        background-color: white;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    i {
+        position: relative;
+        display: block;
+        width: 1000px;
+        height: 500px;
+        overflow: hidden;
+        border-radius: 0px;
+    }
+    
+    i:before, i:after {
+        content: '⥪';
+        position: absolute;
+        top: 50%;
+        left: 1rem;
+        z-index: 2;
+        width: 2rem;
+        height: 2rem;
+        background: black;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+    }
+    
+    i:after {
+        content: '⥭';
+        left: auto;
+        right: 1rem;
+    }
+    
+    
+    input {
+        appearance: none;
+        -ms-appearance: none;
+        -webkit-appearance: none;
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 0px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        transform: translateX(100%);
+        transition: transform ease-in-out 400ms;
+        z-index: 1;
+    }
+    
+    input:focus {
+        outline: none;
+    }
+    
+    input:after {
+        content: attr(title);
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background-color: rgba(0,0,0,0.4);
+        color: white;
+        padding: .5rem;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+    
+    input:not(checked):before {
+        content: '';
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        top: 50%;
+        left: calc(-100% + 1rem);
+    }
+    
+    input:checked:before {
+        display: none;
+        left: 1rem;
+    }
+    
+    input:checked {
+        transform: translateX(0);
+        pointer-event: none;
+        z-index: 0;
+        box-shadow: -5px 10px 20px -15px rgba(0,0,0,1);
+    }
+    
+    input:checked + input:before {
+        left: -3rem;
+    }
+    
+    input:checked + input ~ input:before {
+        display: none;
+    }
+
+    #heading-of-company{
+        border: 1px solid black;
+        margin-top:20px
+
+    }
+    
+</style>
+
+<!--Section: Content-->
+<section class="">
+
+
+
+
+   
+    
+
+
+    {% if user.id and user.is_superuser %}
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="card rounded-0 shadow border-primary text-start summary-card my-3">
+                <div class="card-body">
+                    <div class="d-flex w-100">
+                        <div class="col-8 pe-2">
+                            <div class="summary-title fs-5 border-bottom">Total Categories</div>
+                            <div class="summary-count text-end fw-bolder mt-3 px-4">{{ categories|intcomma }}</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="summary-icon p-3 rounded border text-center bg-gradient bg-light">
+                                <i class="fa fa-list"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="card rounded-0 shadow border-warning text-start summary-card my-3">
+                <div class="card-body">
+                    <div class="d-flex w-100">
+                        <div class="col-8 pe-2">
+                            <div class="summary-title fs-5 border-bottom">Total Buses</div>
+                            <div class="summary-count text-end fw-bolder mt-3 px-4">{{ buses }}</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="summary-icon p-3 rounded border text-center bg-gradient bg-light">
+                                <i class="fa fa-bus fs-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="card rounded-0 shadow border-success text-start summary-card my-3">
+                <div class="card-body">
+                    <div class="d-flex w-100">
+                        <div class="col-8 pe-2">
+                            <div class="summary-title fs-5 border-bottom">Total Upcoming Trip</div>
+                            <div class="summary-count text-end fw-bolder mt-3 px-4">{{ upcoming_trip|intcomma }}</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="summary-icon p-3 rounded border text-center bg-gradient bg-light">
+                                <i class="fa fa-file-invoice fs-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="card card-default rounded-0 shadow border border-dark">
+        <div class="card-body">
+            <div class="container-fluid">
+                {% comment %} <h2 class="text-center fw-bold"></h2> {% endcomment %}
+
+                <i>
+                    <input checked type="radio" name="s" style="background-image: url('/media/default/logo.png');">
+                    <input type="radio" name="s" style="background-image: url('/media/default/bus1.jpg');">
+                    <input type="radio" name="s" style="background-image: url('/media/default/bus2.png');">
+                    <input type="radio" name="s" style="background-image: url('/media/default/bus3.png');">
+                    <input type="radio" name="s" style="background-image: url('/media/default/bus4.png');">
+                    <input type="radio" name="s" style="background-image: url('/media/default/bus5.png');">
+                </i>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="container" align="center" id="heading-of-company">
+        <h2>
+            Welcome To
+        </h2>
+        <h1 style="color: red;"><b>Easy</b><small>Bus</small></h1>
+
+        <p>Where Every Ride is Effortless</p>
+        
+    </div> -->
+    {% endif %}
+</section>
+
+
+</div> {% endblock pageContent %}

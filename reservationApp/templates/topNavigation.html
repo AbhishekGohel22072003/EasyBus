@@ -1,0 +1,151 @@
+{% load static %}
+<header>
+    <!-- Intro settings -->
+    <style>
+        #intro {
+            margin-top: 58px;
+        }
+        
+        @media (max-width: 991px) {
+            #intro {
+                margin-top: 45px;
+            }
+        }
+
+        #navbarID{
+            background-color:#3271a8;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+        }
+        #LoginDesing{
+            border: 2px solid rgb(255, 255, 255);
+            padding-left: 4px;
+            padding-right: 4px;
+            border-radius: 10px;
+        }
+        .nav-link{
+            border-radius: 10px;
+            padding: 5px;
+            margin-right: 9px;
+        }
+        .nav-link:hover{
+            background-color: rgb(20, 90, 151);
+        }
+        #LoginDesing:hover{
+            background-color: rgb(20, 90, 151);
+        }
+        #LogOutDesing{
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 10px;
+        }
+        i{
+            color: black;
+            height: 10px;   
+        }
+    </style>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-blue bg-blue font-white fixed-top shadow border-bottom" id="navbarID">
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" target="_blank" href="{% url 'home-page' %}">
+                <img src="{{ MEDIA_URL }}/default/logo.png" height="16" alt="{{ MEDIA_URL }}" loading="lazy" class="bg-white bg-gradient px-1 py-1" style="margin-top: -3px;" />
+            </a>
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+            <div class="collapse navbar-collapse" id="navbarExample01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="topNav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'home-page' %}"><i class="fa fa-home" aria-hidden="true"></i>&nbsp&nbspHome</a>
+                    </li>
+                    {% if not user.id or not user.is_superuser %}
+                    <li class="nav-item">
+                        
+                        <a class="nav-link" aria-current="page" href="{% url 'find-trip-page' %}"><i class="fas fa-luggage-cart" aria-hidden="true"></i>&nbsp&nbspFind Trip</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'scheduled-trips-page' %}"><i class="fas fa-tasks"></i>&nbsp&nbspScheduled Trips</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url "myBookings" %}" class="nav-link"><i class="fas fa-tasks"></i>My Bookings</a>
+                    </li>
+                    {% endif %}
+
+
+
+                    {% if user.id and user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'category-page' %}"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp&nbspCategories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'location-page' %}"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp&nbspTrip Locations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'bus-page' %}"><i class="fa fa-bus" aria-hidden="true"></i>&nbsp&nbspBuses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'schedule-page' %}"><i class="fas fa-tasks"></i>&nbsp&nbspTrip Schedules</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'booking-page' %}"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp&nbspBooking</a> 
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav d-flex flex-row">
+                    {% if user.id %} {% if user.profile.user_type == 1 %} {% endif %}
+
+                    {% if user.id and not user.is_superuser %}
+
+                    <li class="nav-item me-3 me-lg-0">
+                        <a class="nav-link" href="{% url 'profile' %}">
+                            <span class="me-1"></span><i class="fa fa-user" aria-hidden="true"></i>&nbsp&nbspUser Panel
+                        </a>
+                        <!-- <a class="nav-link" href="{% url 'logout' %}">Logout</a> -->
+                    </li>
+
+                    {% elif user.id and user.is_superuser %}
+
+                    <li class="nav-item me-3 me-lg-0">
+                        <a class="nav-link" href="{% url 'profile' %}">
+                            <span class="me-1"></span><i class="fa fa-user" aria-hidden="true"></i>&nbsp&nbspAdmin Panel
+                        </a>
+                        <!-- <a class="nav-link" href="{% url 'logout' %}">Logout</a> -->
+                    </li>
+
+                    {% endif %}
+                    <li class="nav-item me-3 me-lg-0" id="LogOutDesing">
+                        <a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-power-off" aria-hidden="true"></i>&nbsp&nbspLogout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item me-3 me-lg-0" id="LoginDesing">
+                        <a class="nav-link" href="{% url 'login' %}"><i class="fa fa-key" aria-hidden="true"></i>&nbsp&nbspLogin</a>
+                    </li>
+                    {% comment %} <li class="nav-item me-3 me-lg-0">
+                        <a class="nav-link" href="{% url 'register-user' %}">Signup</a>
+                    </li> {% endcomment %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+    <div id="intro" class="pt-2 text-center bg-light">
+       
+    </div>
+</header>
+<script>
+    $(function() {
+        $('#topNav .nav-link').each(function() {
+            var current = '{{ request.get_full_path | urlencode }}'
+            if (current == $(this).attr('href')) {
+                $(this).parent().addClass('active')
+            }
+        })
+    })
+</script>
